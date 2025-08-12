@@ -1,4 +1,5 @@
-import ex
+"""GUI utility for decrypting log files."""
+
 from binascii import unhexlify
 import os
 import json
@@ -7,6 +8,17 @@ import tkinter as tk
 from tkinter import filedialog, messagebox, ttk
 from tkinter.scrolledtext import ScrolledText
 import threading
+
+# The decryption helper module depends on ``pycryptodome``.  When the
+# dependency is missing, importing it at module load time will raise an
+# exception and prevent the GUI from being displayed.  To keep the interface
+# usable, defer the import and capture the error for later reporting.
+try:  # pragma: no cover - import error handling
+    import ex  # type: ignore
+    _ex_import_error = None
+except Exception as e:  # pragma: no cover - executed only when import fails
+    ex = None  # type: ignore
+    _ex_import_error = e
 
 
 class LoggerUnzipGUI:
@@ -20,8 +32,12 @@ class LoggerUnzipGUI:
         self.iv = b'abcdef1234567890'
         self.infile_dir = ''
         self.out_dir = ''
-        
+
         self.setup_ui()
+
+        # 如果解密模块加载失败，在日志区域给出提示，界面仍可正常使用。
+        if _ex_import_error is not None:
+            self.log_message(f"解密模块加载失败: {_ex_import_error}")
     
     def setup_ui(self):
         # 主框架
@@ -102,6 +118,10 @@ class LoggerUnzipGUI:
     
     def start_decrypt(self):
         """开始解密文件"""
+        if _ex_import_error is not None:
+            messagebox.showerror("错误", f"解密模块加载失败: {_ex_import_error}")
+            return
+
         file_path = self.file_path_var.get().strip()
         if not file_path:
             messagebox.showerror("错误", "请先选择或输入文件路径")
