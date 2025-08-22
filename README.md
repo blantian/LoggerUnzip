@@ -1,8 +1,6 @@
 # Logger Unzip Tool
 
-基于PySide6的现代化日志解密工具，支持跨平台运行。
-
-- 🎨 **现代化界面**: 基于PySide6的日志解密工具
+[LJJLogger](https://github.com/blantian/LJJLogger) 配套日志解密工具，支持跨平台运行。
 
 ## 📦 安装
 
@@ -95,11 +93,3 @@ LoggerUnzip/
 - Python 3.8 或更高版本
 - Windows 10+, macOS 10.14+, 或 Linux
 - 至少 100MB 可用磁盘空间
-
-## 🤝 贡献
-
-欢迎提交Issue和Pull Request！
-
-## 📄 许可证
-
-MIT License 
